@@ -3,8 +3,8 @@ let suivant = $("#next-btn");
 let questionContainer = $("#question-container");
 let questionElement = $("#question");
 let repBtnElement = $("#answers-btn");
-let randomQuestion;
-let actualQuestionIndex;
+let randQuestion;
+let questionMtn;
 let goodRep;
 let active = true;
 let result = document.createElement("p");
@@ -94,7 +94,7 @@ const question = [
         ]
     },
     {
-        question: "Qui a inventer le lanhuage PASCAL ?",
+        question: "Qui a inventer le language PASCAL ?",
         answer: [
             { text: "Blaise Pascal et Nicolas Tesla", correct: false },
             { text: "Jérôme Conan et Sebastien Dumont", correct: false},
@@ -108,7 +108,7 @@ starting.click(startGame);
 
 suivant.click(function () {
     $(".btn").addClass("hide");
-    actualQuestionIndex++;
+    questionMtn++;
     voir();
     active = true;
 });
@@ -120,26 +120,23 @@ function startGame() {
     $("p").addClass("hide");
     questionElement.removeClass("hide");
     result.innerHTML = "";
-
     goodRep = 0;
     starting.addClass("hide");
-
-    randomQuestion = question.sort(() => Math.random() - 0.5);
-    actualQuestionIndex = 0;
-
+    randQuestion = question.sort(() => Math.random() - 0.5);
+    questionMtn = 0;
     questionContainer.removeClass("hide");
     setSuivant();
 }
 
 function setSuivant() {
     suivant.addClass("hide");
-    voir(randomQuestion[actualQuestionIndex]);
+    voir(randQuestion[questionMtn]);
 }
 
 function voir() {
 
-    questionElement.html(question[actualQuestionIndex].question);
-    question[actualQuestionIndex].answer.forEach(answer => {
+    questionElement.html(question[questionMtn].question);
+    question[questionMtn].answer.forEach(answer => {
         const button = document.createElement("button");
         button.innerHTML = answer.text;
         button.classList.add("btn");
@@ -159,9 +156,9 @@ function clickable(e) {
             goodRep++;
         }
         else {
-            for (let x = 0; x < question[actualQuestionIndex].answer.length; x++) {
-                if (question[actualQuestionIndex].answer[x].correct === true) {
-                    result.innerHTML += question[actualQuestionIndex].question + "<br>" + " Réponse : " + question[actualQuestionIndex].answer[x].text + "<br>";
+            for (let x = 0; x < question[questionMtn].answer.length; x++) {
+                if (question[questionMtn].answer[x].correct === true) {
+                    result.innerHTML += question[questionMtn].question + "<br>" + " Réponse : " + question[questionMtn].answer[x].text + "<br>";
                 }
             }
 
@@ -170,7 +167,7 @@ function clickable(e) {
 
     active = false;
 
-    if (randomQuestion.length > actualQuestionIndex + 1) {
+    if (randQuestion.length > questionMtn + 1) {
         suivant.removeClass("hide");
     }
 
